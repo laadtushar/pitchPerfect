@@ -1,5 +1,5 @@
 # docker/Dockerfile
-FROM python:3.9-slim
+FROM python:3.10-slim
 
 # Install system dependencies for OCR, spaCy, etc.
 RUN apt-get update && apt-get install -y \
@@ -13,7 +13,7 @@ RUN apt-get update && apt-get install -y \
 
 # Add apt-get instructions to install libGL
 RUN apt-get update && \
-    apt-get install -y libgl1-mesa-glx && \
+    apt-get install -y libgl1 && \
     rm -rf /var/lib/apt/lists/*
 
 # Install ADB into container
@@ -28,8 +28,7 @@ COPY app/requirements.txt requirements.txt
 
 COPY .env .env
 
-# Install compatible numpy and other dependencies from requirements.txt
-RUN pip install --no-cache-dir numpy==1.21.6
+# Install dependencies from requirements.txt
 RUN pip install --no-cache-dir -r requirements.txt
 
 COPY app/ /app/
